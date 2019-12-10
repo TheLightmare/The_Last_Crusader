@@ -9,7 +9,7 @@ def main():
      
 
     
-    screen = pygame.display.set_mode((1000,800))
+    screen = pygame.display.set_mode((1000,800)) # une fenêtre
      
     running = True
      
@@ -17,9 +17,11 @@ def main():
     while running:
 
         player = pygame.image.load("./sprites/crusader.png") # charge l'image "crusader.png" depuis le dossier "sprites" dans la variable "player"
-        screen.blit(player, (10,10))
+        player.set_colorkey((0,255,0)) # TODO : rendre la couleur verte (0,255,0) transparente
+        
+        screen.blit(player, (50,50)) # place le sprite à l'écran aux coordonnées 10,10 
 
-        pygame.display.flip()
+        pygame.display.flip() # met à jour l'écran
         
         for event in pygame.event.get():
 
