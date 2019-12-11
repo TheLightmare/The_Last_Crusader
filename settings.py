@@ -11,9 +11,13 @@ YELLOW = (255, 255, 0)
 WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 60
-TITLE = "Tilemap Demo"
+TITLE = "The Last Crusader"
 BGCOLOR = DARKGREY
 
-TILESIZE = 32
+TILESIZE = 32  # taille (en pixels) d'une "tile"
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
+
+
+# player settings
+PLAYER_SPEED = 400
