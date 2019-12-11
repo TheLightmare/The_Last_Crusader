@@ -21,3 +21,4 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 # player settings
 PLAYER_SPEED = 400
+PLAYER_IMG = "crusader.png"

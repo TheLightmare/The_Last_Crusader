@@ -16,7 +16,10 @@ class Game:
 
     def load_data(self):
         game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, "sprites")
         self.map = Map(path.join(game_folder, "map.txt"))
+        self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert()
+        self.player_img.set_colorkey((0,255,0))
 
     def new(self):
         # initialize all variables and do all the setup for a new game
