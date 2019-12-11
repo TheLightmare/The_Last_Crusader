@@ -9,7 +9,7 @@ def main():
      
 
     
-    screen = pygame.display.set_mode((1000,800)) # une fenêtre
+    screen = pygame.display.set_mode((1000,800), pygame.RESIZABLE, pygame.SCALED) # une fenêtre
 
 
     player = pygame.image.load("./sprites/crusader.png").convert() # charge l'image "crusader.png" depuis le dossier "sprites" dans la variable "player"
