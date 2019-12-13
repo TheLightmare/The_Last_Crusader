@@ -20,6 +20,7 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 WALL_IMG = "Pwall.png"
 GRASS_IMG = "Pgrass.png"
+SLAB_IMG = "Pslab.png"
 
 # player settings
 PLAYER_SPEED = 400
