@@ -20,11 +20,14 @@ class Game:
         self.map = Map(path.join(game_folder, "map.txt"))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert()
         self.player_img.set_colorkey((0,255,0))
+        self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert()
+        self.grass_img = pg.image.load(path.join(img_folder, GRASS_IMG)).convert()
 
     def new(self):
         # initialize all variables and do all the setup for a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.grass = pg.sprite.Group()
         
         
         for row, tiles in enumerate(self.map.data) :  # "enumerate" permet de récupérer l'index de l'élément de la liste
@@ -32,8 +35,12 @@ class Game:
                 if tile == "1" :  # s'il y a un "1" dans le fichier map.txt, on fait spawner un mur
                     Wall(self, col, row)
                 elif tile == "p" : # la lettre "p" dans le fichier map.txt est le point de spawn du joueur
-                    self.player = Player(self, col, row)
-
+                    player_x = col                #self.player = Player(self, col, row)
+                    player_y = row
+                    Grass(self, col, row)
+                elif tile == "." :
+                    Grass(self, col, row)
+        self.player = Player(self, player_x, player_y)
         self.camera = Camera(self.map.width, self.map.height)
 
     def run(self):
@@ -77,7 +84,7 @@ class Game:
                     self.quit()
                 
                 
-    def show_start_screen(self):
+    def show_start_screen(self): # écran de démarrage du jeu !
         pass
 
     def show_go_screen(self):

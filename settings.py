@@ -18,6 +18,8 @@ TILESIZE = 32  # taille (en pixels) d'une "tile"
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
+WALL_IMG = "Pwall.png"
+GRASS_IMG = "Pgrass.png"
 
 # player settings
 PLAYER_SPEED = 400
