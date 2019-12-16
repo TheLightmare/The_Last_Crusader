@@ -2,6 +2,26 @@ import pygame as pg
 from settings import *
 vec = pg.math.Vector2
 
+def collide_with_walls(sprite, group, dir):
+    if dir == 'x':
+        hits = pg.sprite.spritecollide(sprite, sprite.game.walls, False)
+        if hits:
+            if self.vel.x > 0:
+                sprite.pos.x = hits[0].rect.left - self.rect.width
+            if self.vel.x < 0:
+                self.pos.x = hits[0].rect.right
+            self.vel.x = 0
+            self.rect.x = self.pos.x
+    if dir == 'y':
+        hits = pg.sprite.spritecollide(self, self.game.walls, False)
+        if hits:
+            if self.vel.y > 0:
+                self.pos.y = hits[0].rect.top - self.rect.height
+            if self.vel.y < 0:
+                self.pos.y = hits[0].rect.bottom
+            self.vel.y = 0
+            self.rect.y = self.pos.y
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
@@ -26,25 +46,7 @@ class Player(pg.sprite.Sprite):
         if self.vel.x != 0 and self.vel.y != 0:
             self.vel *= 0.7071
 
-    def collide_with_walls(self, dir):
-        if dir == 'x':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
-            if hits:
-                if self.vel.x > 0:
-                    self.pos.x = hits[0].rect.left - self.rect.width
-                if self.vel.x < 0:
-                    self.pos.x = hits[0].rect.right
-                self.vel.x = 0
-                self.rect.x = self.pos.x
-        if dir == 'y':
-            hits = pg.sprite.spritecollide(self, self.game.walls, False)
-            if hits:
-                if self.vel.y > 0:
-                    self.pos.y = hits[0].rect.top - self.rect.height
-                if self.vel.y < 0:
-                    self.pos.y = hits[0].rect.bottom
-                self.vel.y = 0
-                self.rect.y = self.pos.y
+
 
     def update(self):
         self.get_keys()
@@ -89,3 +91,29 @@ class Slab(pg.sprite.Sprite) :
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+
+
+class Mob(pg.sprite.Sprite) :
+    def __init__(self, game, x, y) :
+        self.groups = game.all_sprites, game.mobs
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.mob_img
+        self.rect = self.image.get_rect()
+        self.pos = vec(x, y) * TILESIZE
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        self.rect.center = self.pos
+        self.rot = 0
+        
+    def update(self) :
+        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1, 0))
+        self.image = pg.transform.rotate(self.game.mob_img, self.rot)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+
+        self.acc = vec(MOB_SPEED, 0).rotate(-self.rot)
+        self.acc += self.vel * -1
+        self.vel += self.acc * self.game.dt
+        self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
+        self.rect.center = self.pos

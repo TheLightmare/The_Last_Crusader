@@ -22,6 +22,11 @@ WALL_IMG = "Pwall.png"
 GRASS_IMG = "Pgrass.png"
 SLAB_IMG = "Pslab.png"
 
+# Mob settings
+
+MOB_IMG = "Pmob.png"
+MOB_SPEED = 300
+
 # player settings
 PLAYER_SPEED = 400
 PLAYER_IMG = "crusader.png"
