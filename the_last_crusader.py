@@ -23,14 +23,16 @@ class Game:
         self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert()
         self.grass_img = pg.image.load(path.join(img_folder, GRASS_IMG)).convert()
         self.slab_img = pg.image.load(path.join(img_folder, SLAB_IMG)).convert()
-
+        self.mob_img = pg.image.load(path.join(img_folder, MOB_IMG)).convert()
+        self.mob_img.set_colorkey((0,255,0))
+        
     def new(self):
         # initialize all variables and do all the setup for a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.grass = pg.sprite.Group()
         self.slab = pg.sprite.Group()
-        
+        self.mobs = pg.sprite.Group()
         
         for row, tiles in enumerate(self.map.data) :  # "enumerate" permet de récupérer l'index de l'élément de la liste
             for col, tile in enumerate(tiles) :
@@ -44,6 +46,12 @@ class Game:
                     Grass(self, col, row)
                 elif tile == "2" :
                     Slab(self, col, row)
+                elif tile == "m" :
+                    Grass(self, col, row)
+                    mob_x = col
+                    mob_y = row
+
+        Mob(self, mob_x, mob_y)
         self.player = Player(self, player_x, player_y)
         self.camera = Camera(self.map.width, self.map.height)
 
@@ -72,6 +80,7 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
     def draw(self):
+        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         for sprite in self.all_sprites :
