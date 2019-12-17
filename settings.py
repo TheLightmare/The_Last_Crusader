@@ -1,3 +1,5 @@
+import pygame as pg
+
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -26,7 +28,9 @@ SLAB_IMG = "Pslab.png"
 
 MOB_IMG = "Pmob.png"
 MOB_SPEED = 300
+MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
 
 # player settings
 PLAYER_SPEED = 400
 PLAYER_IMG = "crusader.png"
+PLAYER_HIT_RECT = pg.Rect(0, 0, 64, 64)

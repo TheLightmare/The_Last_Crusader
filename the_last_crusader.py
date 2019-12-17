@@ -48,8 +48,10 @@ class Game:
                     Slab(self, col, row)
                 elif tile == "m" :
                     Grass(self, col, row)
-                    Mob(self, col, row)
-                    
+                    mob_x = col
+                    mob_y = row
+
+        Mob(self, mob_x, mob_y)
         self.player = Player(self, player_x, player_y)
         self.camera = Camera(self.map.width, self.map.height)
 
