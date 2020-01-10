@@ -21,7 +21,7 @@ GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
 WALL_IMG = "Pwall.png"
-GRASS_IMG = "Pgrass.png"
+GRASS_IMG = "grass.png"
 SLAB_IMG = "Pslab.png"
 
 # Mob settings

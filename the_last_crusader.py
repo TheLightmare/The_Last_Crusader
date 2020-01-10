@@ -4,6 +4,7 @@ from settings import * # importe les fonctions contenues dans le fichier "settin
 from sprites import *  # importe les fonctions contenues dans le fichier "sprites.py"
 from os import path # librairie pour gérer les localisations des fichiers
 from tilemap import *
+import pytmx
 
 class Game:
     def __init__(self):
@@ -17,7 +18,10 @@ class Game:
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, "sprites")
-        self.map = Map(path.join(game_folder, "map.txt"))
+        map_folder = path.join(game_folder, "maps")
+        self.map = TiledMap(path.join(map_folder, "map.tmx"))
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert()
         self.player_img.set_colorkey((0,255,0))
         self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert()
@@ -33,26 +37,35 @@ class Game:
         self.grass = pg.sprite.Group()
         self.slab = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
-        
-        for row, tiles in enumerate(self.map.data) :  # "enumerate" permet de récupérer l'index de l'élément de la liste
-            for col, tile in enumerate(tiles) :
-                if tile == "1" :  # s'il y a un "1" dans le fichier map.txt, on fait spawner un mur
-                    Wall(self, col, row)
-                elif tile == "p" : # la lettre "p" dans le fichier map.txt est le point de spawn du joueur
-                    player_x = col                #self.player = Player(self, col, row)
-                    player_y = row
-                    Grass(self, col, row)
-                elif tile == "." :
-                    Grass(self, col, row)
-                elif tile == "2" :
-                    Slab(self, col, row)
-                elif tile == "m" :
-                    Grass(self, col, row)
-                    mob_x = col
-                    mob_y = row
+                
+        ##        for row, tiles in enumerate(self.map.data) :  # "enumerate" permet de récupérer l'index de l'élément de la liste
+        ##            for col, tile in enumerate(tiles) :
+        ##                if tile == "1" :  # s'il y a un "1" dans le fichier map.txt, on fait spawner un mur
+        ##                    Wall(self, col, row)
+        ##                elif tile == "p" : # la lettre "p" dans le fichier map.txt est le point de spawn du joueur
+        ##                    player_x = col                #self.player = Player(self, col, row)
+        ##                    player_y = row
+        ##                    Grass(self, col, row)
+        ##                elif tile == "." :
+        ##                    Grass(self, col, row)
+        ##                elif tile == "2" :
+        ##                    Slab(self, col, row)
+        ##                elif tile == "m" :
+        ##                    Grass(self, col, row)
+        ##                    mob_x = col
+        ##                    mob_y = row
+        ##
+        ##        Mob(self, mob_x, mob_y)
+        ##        self.player = Player(self, player_x, player_y)
 
-        Mob(self, mob_x, mob_y)
-        self.player = Player(self, player_x, player_y)
+        for tile_object in self.map.tmxdata.objects :
+            if tile_object.name == "player" :
+                self.player = Player(self, tile_object.x, tile_object.y)
+            if tile_object.name == "wall" :
+                Obstacle(self, tile_object.x, tile_object.y, tile_object.width, tile_object.height)
+            if tile_object.name == "mob" :
+                Mob(self, tile_object.x, tile_object.y)
+        
         self.camera = Camera(self.map.width, self.map.height)
 
     def run(self):
@@ -81,8 +94,9 @@ class Game:
 
     def draw(self):
         pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
-        self.screen.fill(BGCOLOR)
-        self.draw_grid()
+        #self.screen.fill(BGCOLOR)
+        self.screen.blit(self.map_img, self.camera.apply_rect(self.map_rect))
+        #self.draw_grid()
         for sprite in self.all_sprites :
             self.screen.blit(sprite.image, self.camera.apply(sprite))
         pg.display.flip()
