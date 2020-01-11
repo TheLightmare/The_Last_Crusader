@@ -10,13 +10,13 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
 # game settings
-WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
+WIDTH = 2048   # 16 * 64 or 32 * 32 or 64 * 16
+HEIGHT = 1200  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 60
 TITLE = "The Last Crusader"
 BGCOLOR = DARKGREY
 
-TILESIZE = 32  # taille (en pixels) d'une "tile"
+TILESIZE = 64  # taille (en pixels) d'une "tile"
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
@@ -26,9 +26,9 @@ SLAB_IMG = "Pslab.png"
 
 # Mob settings
 
-MOB_IMG = "Pmob.png"
+MOB_IMG = "pnj_left.png"
 MOB_SPEED = 300
-MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
+MOB_HIT_RECT = pg.Rect(0, 0, 32, 75)
 
 # player settings
 PLAYER_SPEED = 400

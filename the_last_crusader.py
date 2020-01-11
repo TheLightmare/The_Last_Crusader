@@ -84,7 +84,7 @@ class Game:
     def update(self):
         # update portion of the game loop
         self.all_sprites.update()
-        self.camera.update(self.player)
+        self.camera.update(self.player) # la cible de la caméra est le joueur (très pratique :) )
 
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -93,7 +93,7 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
     def draw(self):
-        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
+        #pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         #self.screen.fill(BGCOLOR)
         self.screen.blit(self.map_img, self.camera.apply_rect(self.map_rect))
         #self.draw_grid()

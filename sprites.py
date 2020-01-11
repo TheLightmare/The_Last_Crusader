@@ -31,6 +31,7 @@ class Player(pg.sprite.Sprite):
         self.game = game
         self.image = game.player_img
         self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
         self.hit_rect = PLAYER_HIT_RECT
         self.hit_rect.center = self.rect.center
         self.vel = vec(0, 0)
@@ -118,9 +119,10 @@ class Mob(pg.sprite.Sprite) :
         self.game = game
         self.image = game.mob_img
         self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
         self.hit_rect = MOB_HIT_RECT.copy()
         self.hit_rect.center = self.rect.center
-        self.pos = vec(x, y) * TILESIZE 
+        self.pos = vec(x, y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.rect.center = self.pos
@@ -128,7 +130,7 @@ class Mob(pg.sprite.Sprite) :
         
     def update(self) :
         self.rot = (self.game.player.pos - self.pos).angle_to(vec(1, 0))
-        self.image = pg.transform.rotate(self.game.mob_img, self.rot)
+        #self.image = pg.transform.rotate(self.game.mob_img, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
