@@ -22,8 +22,7 @@ class Game:
         self.map = TiledMap(path.join(map_folder, "map.tmx"))
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
-        self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert()
-        self.player_img.set_colorkey((0,255,0))
+        self.player_img = Spritesheet(path.join(img_folder, PLAYER_IMG))
         self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert()
         self.grass_img = pg.image.load(path.join(img_folder, GRASS_IMG)).convert()
         self.slab_img = pg.image.load(path.join(img_folder, SLAB_IMG)).convert()
@@ -93,7 +92,7 @@ class Game:
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
     def draw(self):
-        #pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
+        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         #self.screen.fill(BGCOLOR)
         self.screen.blit(self.map_img, self.camera.apply_rect(self.map_rect))
         #self.draw_grid()

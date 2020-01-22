@@ -28,9 +28,9 @@ SLAB_IMG = "Pslab.png"
 
 MOB_IMG = "pnj_left.png"
 MOB_SPEED = 300
-MOB_HIT_RECT = pg.Rect(0, 0, 32, 75)
+MOB_HIT_RECT = pg.Rect(0, 0, 64, 150)
 
 # player settings
 PLAYER_SPEED = 400
-PLAYER_IMG = "crusader.png"
-PLAYER_HIT_RECT = pg.Rect(0, 0, 64, 64)
+PLAYER_IMG = "crusader_right.png"
+PLAYER_HIT_RECT = pg.Rect(0, 0, 128, 150)

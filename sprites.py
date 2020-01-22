@@ -24,12 +24,28 @@ def collide_with_walls(sprite, group, dir):
             sprite.hit_rect.centery = sprite.pos.y
 
 
+class Spritesheet:
+    def __init__(self, filename) :
+        self.spritesheet = pg.image.load(filename).convert()
+    def get_image(self, x, y, width, height) :
+        image = pg.Surface((width, height))
+        image.blit(self.spritesheet, (0, 0), (x, y, width, height))
+        return image
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = game.player_img
+
+        self.walking = False
+        self.current_frame = 0
+        self.last_update = 0
+        self.load_images()
+        self.direction = 0
+        
+        self.image = self.game.player_img.get_image(0, 0, 180, 150)
+        #self.image.set_colorkey((0,255,0))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.hit_rect = PLAYER_HIT_RECT
@@ -38,6 +54,17 @@ class Player(pg.sprite.Sprite):
         self.pos = vec(x, y)
         self.rot = 0
 
+    def load_images(self) :
+        self.standing_frames_r = [self.game.player_img.get_image(0, 0, 180, 150), self.game.player_img.get_image(180, 0, 180, 150)]
+
+        for frame in self.standing_frames_r :
+            frame.set_colorkey((0, 255, 0))
+        
+        self.standing_frames_l = []
+        for frame in self.standing_frames_r :
+            frame.set_colorkey((0, 255, 0))
+            self.standing_frames_l.append(pg.transform.flip(frame, True, False))
+        
     def get_keys(self):
             self.vel = vec(0, 0)
             keys = pg.key.get_pressed()
@@ -53,8 +80,8 @@ class Player(pg.sprite.Sprite):
                 self.vel *= 0.7071
 
     def update(self):
+        self.animate()
         self.get_keys()
-        self.image = pg.transform.rotate(self.game.player_img, self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
@@ -64,6 +91,34 @@ class Player(pg.sprite.Sprite):
         collide_with_walls(self, self.game.walls, 'y')
         self.rect.center = self.hit_rect.center
 
+    def animate(self) :
+        now = pg.time.get_ticks()
+        if self.vel.x != 0 :
+            self.walking = True
+        else :
+            self.walking = False
+
+        if self.walking :
+            if now - self.last_update > 200 :
+                self.last_update = now
+                self.current_frame = (self.current_frame + 1) % len(self.standing_frames_r)
+            if self.vel.x > 0 :
+                self.image = self.standing_frames_r[self.current_frame]
+                self.direction = 0
+            else :
+                self.image = self.standing_frames_l[self.current_frame]
+                self.direction = 1
+                
+        if not self.walking :
+            if now - self.last_update > 200 :
+                self.last_update = now
+                self.current_frame = (self.current_frame + 1) % len(self.standing_frames_r)
+                if self.direction == 0 :
+                    self.image = self.standing_frames_r[self.current_frame]
+                else :
+                    self.image = self.standing_frames_l[self.current_frame]
+                    
+        
 class Wall(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.walls
